@@ -13,8 +13,8 @@ metadata:
     helm.sh/chart: kafka-30.0.5
 type: Opaque
 data:
-  inter-broker-password: "clBURUxyeGE3Nw=="
-  controller-password: "S3BManlYbHJ1cg=="
+  inter-broker-password: "VnNQUlJJZ2RUeQ=="
+  controller-password: "ODJFczFOaG9WTA=="
 ---
 # Source: kafka/charts/zookeeper/templates/scripts-configmap.yaml
 apiVersion: v1
@@ -507,9 +507,9 @@ spec:
         - containerPort: 8080
         env:
         - name: KAFKA_CLUSTERS_0_NAME
-          value: "kafka-kafka-cluster"
+          value: "kafka-cluster"
         - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-          value: "kafka-kafka-broker-0.kafka-kafka-broker-headless.default.svc.cluster.local:9092,kafka-kafka-broker-1.kafka-kafka-broker-headless.default.svc.cluster.local:9092,kafka-kafka-broker-2.kafka-kafka-broker-headless.default.svc.cluster.local:9092"
+          value: "kafka-broker-0.kafka-broker-headless.default.svc.cluster.local:9092,kafka-broker-1.kafka-broker-headless.default.svc.cluster.local:9092,kafka-broker-2.kafka-broker-headless.default.svc.cluster.local:9092"
         - name: KAFKA_CLUSTERS_0_ZOOKEEPER
           value: "kafka-zookeeper.default.svc.cluster.local:2181"
         - name: SERVER_SERVLET_CONTEXT_PATH
@@ -707,8 +707,16 @@ spec:
           configMap:
             name: kafka-zookeeper-scripts
             defaultMode: 493
-        - name: data
-          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+        storageClassName: standard-rwo
 ---
 # Source: kafka/templates/broker/statefulset.yaml
 apiVersion: apps/v1
@@ -748,7 +756,7 @@ spec:
         app.kubernetes.io/part-of: kafka
       annotations:
         checksum/configuration: e5421a74a5a137a0735c169664629deed06a2d4dbd16378e739ec73e525ef56e
-        checksum/passwords-secret: 99db48b12e96012bfc5a7557a205e447aba10b1e02158c3283006780882c890e
+        checksum/passwords-secret: 3d8bb02e2dfc0915f5c8b9f9b86909a187a436960ed1a65e8b414606aba133a4
     spec:
       
       automountServiceAccountToken: false
@@ -937,3 +945,25 @@ spec:
           requests:
             storage: "8Gi"
         storageClassName: standard-rwo
+---
+# Source: kafka/templates/ui-manifest.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kafka-ui
+  namespace: default
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: kafka.cortex.addverb.com
+      http:
+        paths:
+          - path: /kafka-ui
+            pathType: Prefix
+            backend:
+              service:
+                name: kafka-ui
+                port:
+                  number: 8090

@@ -12,8 +12,8 @@ broker:
   pdb:
     create: false
   persistence:
-    enabled: true
-    storageClass: standard-rwo
+    enabled: false
+    # storageClass: standard-rwo
   extraConfig: "auto.create.topics.enable=true"
   ports:
     external: 9092
@@ -40,7 +40,8 @@ zookeeper:
     create: false
   persistence:
     enabled: false
-
+    # storageClass: standard-rwo
+    
 networkPolicy:
   enabled: false
 
@@ -63,3 +64,9 @@ externalAccess:
 
 kafkaui:
   enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik-internal
+      traefik.ingress.kubernetes.io/router.middlewares: ingress-cors-header@kubernetescrd
+    host: kafka.cortex.addverb.com
