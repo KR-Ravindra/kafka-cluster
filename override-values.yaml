@@ -1,0 +1,64 @@
+image:
+  tag: 3.6
+
+kraft:
+  enabled: false
+
+namespace: cluster
+
+broker:
+  replicaCount: 3
+  podAntiAffinityPreset: hard
+  pdb:
+    create: false
+  persistence:
+    enabled: false
+  extraConfig: "auto.create.topics.enable=true"
+  ports:
+    external: 9092
+
+listeners:
+  client:
+    protocol: PLAINTEXT
+  external:
+    protocol: PLAINTEXT
+  interBroker:
+    protocol: PLAINTEXT
+
+controller:
+  replicaCount: 0
+
+zookeeper:
+  enabled: true
+  replicaCount: 3
+  pdb:
+    create: false
+  networkPolicy:
+    enabled: false
+  serviceAccount:
+    create: false
+  persistence:
+    enabled: false
+
+networkPolicy:
+  enabled: false
+
+serviceAccount:
+  create: false
+
+provisioning:
+  serviceAccount:
+    create: false
+
+externalAccess:
+  enabled: true
+  broker:
+    service:
+      type: NodePort
+      nodePorts:
+        - 30166
+        - 30167
+        - 30168
+
+kafkaui:
+  enabled: true
