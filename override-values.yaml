@@ -12,7 +12,8 @@ broker:
   pdb:
     create: false
   persistence:
-    enabled: false
+    enabled: true
+    storageClass: standard-rwo
   extraConfig: "auto.create.topics.enable=true"
   ports:
     external: 9092

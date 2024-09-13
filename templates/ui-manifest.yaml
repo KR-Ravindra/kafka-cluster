@@ -25,9 +25,9 @@ spec:
         - containerPort: 8080
         env:
         - name: KAFKA_CLUSTERS_0_NAME
-          value: "{{ $release }}-kafka-cluster"
+          value: "{{ $release }}-cluster"
         - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-          value: "{{ $release }}-kafka-broker-0.{{ $release }}-kafka-broker-headless.{{ $namespace }}.svc.cluster.local:9092,{{ $release }}-kafka-broker-1.{{ $release }}-kafka-broker-headless.{{ $namespace }}.svc.cluster.local:9092,{{ $release }}-kafka-broker-2.{{ $release }}-kafka-broker-headless.{{ $namespace }}.svc.cluster.local:9092"
+          value: "{{ $release }}-broker-0.{{ $release }}-broker-headless.{{ $namespace }}.svc.cluster.local:9092,{{ $release }}-broker-1.{{ $release }}-broker-headless.{{ $namespace }}.svc.cluster.local:9092,{{ $release }}-broker-2.{{ $release }}-broker-headless.{{ $namespace }}.svc.cluster.local:9092"
         - name: KAFKA_CLUSTERS_0_ZOOKEEPER
           value: "{{ $release }}-zookeeper.{{ $namespace }}.svc.cluster.local:2181"
         - name: SERVER_SERVLET_CONTEXT_PATH
