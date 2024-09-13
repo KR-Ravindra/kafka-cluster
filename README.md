@@ -1,3 +1,5 @@
+CLONED FROM BITNAMI
+
 <!--- app-name: Apache Kafka -->
 
 # Bitnami package for Apache Kafka
