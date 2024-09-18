@@ -1,8 +1,8 @@
 image:
-  tag: 3.6 # specify kafka version here
+  tag: 3.6
 
 kraft:
-  enabled: false # for zookeeper, set this false
+  enabled: false
 
 namespace: cluster
 
@@ -13,14 +13,14 @@ broker:
     create: false
   persistence:
     enabled: false
-    # storageClass: standard-rwo # uncomment when persistence is enabled
-  extraConfig: "auto.create.topics.enable=true" # to enable auto topic creation
+    # storageClass: standard-rwo
+  extraConfig: "auto.create.topics.enable=true"
   ports:
     external: 9092
 
 listeners:
   client:
-    protocol: PLAINTEXT # change to SASL_PLAINTEXT for SASL
+    protocol: PLAINTEXT
   external:
     protocol: PLAINTEXT
   interBroker:
@@ -30,7 +30,7 @@ controller:
   replicaCount: 0
 
 zookeeper:
-  enabled: true # zookeeper from included chart
+  enabled: true
   replicaCount: 3
   pdb:
     create: false
@@ -39,7 +39,7 @@ zookeeper:
   serviceAccount:
     create: false
   persistence:
-    enabled: false # only zookeeper persistence
+    enabled: false
     # storageClass: standard-rwo
     
 networkPolicy:
@@ -58,12 +58,12 @@ externalAccess:
     service:
       type: NodePort
       nodePorts:
-        - 30166 # broker 1 listener
-        - 30167 # broker 2 listener
-        - 30168 # broker 3 listener
+        - 30166
+        - 30167
+        - 30168
 
 kafkaui:
-  enabled: true # kafka ui included
+  enabled: true
   ingress:
     enabled: true
     annotations:
