@@ -1,4 +1,4 @@
-# SonarQube - Addverb
+# Kafka - Addverb
 
 
 For chart particulars - read [here](./kafka/README.md)
